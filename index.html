@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>N3 nep-17 transfers</title>
+      <script src="https://cdn.tailwindcss.com"></script>
+	  <script src="https://unpkg.com/@cityofzion/neon-js@next"></script>
+      <style>
+	  		 body {
+			 background: linear-gradient(135deg, #374151, #1F2937);
+            background-size: 400% 400%;
+            animation: gradient 30s ease infinite;
+            transition: background-size 0.5s ease;
+		 }
+		 
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+		.nav-item.active {
+			background-color: #333333; /* A distinct color for active state */
+			font-weight: 600;
+		}
+		
+		/* Existing CSS for loading spinner and disabled input */
+		@keyframes spin {
+			0% { transform: rotate(0deg); }
+			100% { transform: rotate(360deg); }
+		}
+
+		.loading-spinner {
+			border: 4px solid rgba(0, 0, 0, 0.1);
+			border-left-color: #4CAF50; /* Green accent */
+			border-radius: 50%;
+			width: 20px;
+			height: 20px;
+			animation: spin 1s linear infinite;
+		}
+
+		.input-disabled {
+			background-color: #f3f3f3;
+			color: #888;
+		}
+
+		/* Additional CSS for pulsing effect */
+		@keyframes pulse {
+			0% {
+				box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); /* Green accent */
+			}
+			70% {
+				box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
+			}
+			100% {
+				box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+			}
+		}
+
+		.pulsing {
+			animation: pulse 2s infinite;
+		}
+		
+		@keyframes chill {
+			0%, 100% {
+				box-shadow: 0 0 5px rgba(76, 175, 80, 0.5); /* Soft glow */
+			}
+			50% {
+				box-shadow: 0 0 10px rgba(76, 175, 80, 0.7); /* Slightly stronger glow */
+			}
+		}
+
+		.chill {
+			animation: chill 3s infinite ease-in-out;
+			color: rgba(76, 175, 80, 0.7); 
+			font-weight: 900;
+		}
+         @media (min-width: 768px) {
+         body, html, #root {
+         height: 100%;
+         }
+
+         .flex-container {
+         min-height: 100vh; /* Use viewport height to fill the screen */
+         }
+         .dropdown-content {
+         position: absolute; /* Absolute positioning relative to its positioned ancestor */
+         left: 0; /* Position to the left edge of the dropdown button */
+         right: 0;
+         top: 100%; /* Align to the top of the dropdown button */
+         }
+         }
+		 
+         @media (max-width: 767px) {
+         /* Adjust dropdown menu on mobile */
+         .dropdown-content {
+         right: 0; /* Align the right edge of the dropdown with the right edge of its trigger */
+         left: auto; /* Override any other left positioning */
+         top: 100%; /* Position it directly below the dropdown trigger */
+         }
+         }
+		 .bg-active, bg-active:hover {
+			background-color: rgb(31 41 55); /* Example: a different shade of gray */
+		  }
+		@layer utilities {
+			.hide {
+				display: none;
+			}
+		  .scrollbar::-webkit-scrollbar {
+			width: 10px;
+			height: 15px;
+		  }
+
+		  .scrollbar::-webkit-scrollbar-track {
+			border-radius: 100vh;
+
+		  }
+
+		  .scrollbar::-webkit-scrollbar-thumb {
+			background: rgb(75 85 99);
+			border-radius: 100vh;
+			
+		  }
+
+		  .scrollbar::-webkit-scrollbar-thumb:hover {
+			background: rgb(107 114 128);
+		  }
+		}
+      </style>
+   </head>
+   <body class="text-gray-300">
+      <!-- Mobile sidebar toggle script -->
+      <script>
+         // Function to toggle the sidebar
+         function toggleSidebar() {
+         	document.getElementById('sidebar').classList.toggle('-translate-x-full');
+         }
+         
+         // Event listener to close the sidebar when clicking outside of it on mobile
+         document.addEventListener('DOMContentLoaded', function () {
+         	document.addEventListener('click', function(event) {
+         		let sidebar = document.getElementById('sidebar');
+         		let toggleButton = document.querySelector('.menu-button');
+         		let clickInsideSidebar = sidebar.contains(event.target);
+         		let clickOnToggleButton = toggleButton.contains(event.target);
+         
+         		if (!clickInsideSidebar && !clickOnToggleButton) {
+         			sidebar.classList.add('-translate-x-full');
+         		}
+         	});
+         });
+      </script>
+      <!-- Flex container for sidebar and main content -->
+      <div class="flex flex-container h-screen">
+         <!-- Sidebar -->
+         <div id="sidebar" class="flex flex-col bg-black w-64 space-y-6 py-7 pt-0 px-2 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-300 ease-in-out z-10 md:z-auto md:fixed md:min-h-full">
+            <!-- Sidebar content -->
+			 <!-- Logo -->
+			<div class="flex items-center h-14 mb-4">
+			  <span class="text-xl font-semibold">N3 Nep17 Transfers</span>
+			</div>
+            <!-- Example sidebar links -->
+            <nav id="nav" class="text-white flex-1 pr-2 overflow-y-auto overflow-x-hidden scrollbar">
+               <a href="#n3-nep17" id="n3-nep17" class="nav-item block py-2 px-2 rounded-lg transition duration-100 hover:bg-zinc-700">Search</a>
+               <!-- Add more links as needed -->
+            </nav>
+         </div>
+         <!-- Main content area -->
+         <div class="flex-1 flex flex-col relative">
+            <!-- Top bar -->
+            <div class="flex-shrink-0">
+               <div class="flex items-center justify-between px-4 py-2">
+                  <!-- Hamburger menu for mobile -->
+                  <div class="md:hidden">
+                     <button onclick="toggleSidebar()" class="text-gray-500 focus:outline-none menu-button">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                     </button>
+                  </div>
+                  <!-- Additional content for top bar -->
+                  <!-- Dropdown menu container -->
+                  <div class="relative inline-block ">
+                     <!-- Dropdown menu trigger -->
+                     <button class="inline-flex items-center w-full pl-3 pr-2 py-2 font-medium text-white transition duration-100 hover:bg-gray-800 hover:bg-opacity-40 bg-opacity-0 active:bg-opacity-100 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 z-20" id="menu-button" aria-expanded="true" aria-haspopup="true">
+                        Menu
+                        <!-- Icon indicating dropdown -->
+                        <svg class="w-5 h-5 ml-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                           <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                     </button>
+                     <!-- Dropdown menu -->
+                     <div class="dropdown-content hidden origin-top-right absolute mt-2 w-56 rounded-lg shadow-lg bg-neutral-900 border border-neutral-600 ring-1 ring-black ring-opacity-5 focus:outline-none z-10" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+                        <div class="p-1 space-y-2" role="none">
+                           <!-- Active: "bg-gray-500 text-white", Not Active: "text-gray-300" -->
+                           <button id="downloadCsv" class="block py-2 px-2 rounded-lg transition duration-100 hover:bg-zinc-700 w-full text-left" role="menuitem" tabindex="-1" id="menu-item-0">Download csv</button>
+                           <button id="downloadJson" class="block py-2 px-2 rounded-lg transition duration-100 hover:bg-zinc-700 w-full text-left" role="menuitem" tabindex="-1" id="menu-item-0">Download json</button>
+                           <!-- ... more items as needed -->
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <!-- Main content -->
+            
+			
+			<div id="results" class="h-full flex flex-col md:flex-row gap-4 m-4">
+				<!-- Summary Card -->
+				<div id="summaryCard" class="pointer-events-none opacity-0 flex-1 max-h-32 p-4  rounded-lg border border-gray-200 shadow-md bg-gray-800 border-gray-700" >
+					<h5 class="mb-2 text-2xl font-bold tracking-tight text-white">Dataset Summary</h5>
+					<p id="summaryContent" class="font-normal text-gray-400"></p>
+				</div>
+
+				<!-- JSON Data Display -->
+				<div id="jsonData" class="pointer-events-none opacity-0 flex-1 p-4   rounded-lg border border-gray-200 shadow-md overflow-x-auto bg-gray-800 border-gray-700" style="max-height: 470px">
+					<pre id="rawData" class="max-w-64 md:max-w-full text-gray-400"></pre>
+				</div>
+			</div>
+						
+            <!-- Container for positioning the input box -->
+            <div class="flex inset-x-0 bottom-0 p-4 md:relative bg-transparent">
+               <div class="relative w-full max-w-md mx-auto md:max-w-2xl">
+                  <input id="addressInput" type="text" class="w-full pl-4 pr-10 py-3.5 border border-gray-600 bg-transparent rounded-xl focus:outline-none focus:border-gray-500" placeholder="Enter data...">
+                  <button id="searchBtn" class="absolute inset-y-0 right-1 flex items-center m-3 p-1 rounded-lg text-gray-300 border bg-gray-600 border-gray-600 hover:bg-gray-700 hover:text-gray-300  hover:border-gray-600 focus:outline-none active:border-gray-500">
+                     <svg id="searchBtnSvg" class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                     </svg>
+                  </button>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- Dropdown script -->
+		<script>
+		  document.addEventListener('DOMContentLoaded', function () {
+			const menuButton = document.getElementById('menu-button');
+			const dropdownMenu = menuButton.nextElementSibling;
+
+			menuButton.addEventListener('click', function () {
+			  dropdownMenu.classList.toggle('hidden');
+			  menuButton.classList.toggle('bg-active'); // Toggle the background class
+			});
+
+			// Close the dropdown when clicked outside
+			document.addEventListener('click', function (event) {
+			  if (!menuButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+				dropdownMenu.classList.add('hidden');
+				menuButton.classList.remove('bg-active'); // Remove the background class
+			  }
+			});
+		  });
+		</script>
+		<script type="text/javascript" src="n3-nep17-adresstransfers.js"></script>
+   </body>
+</html>
